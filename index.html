@@ -315,59 +315,6 @@
       setInterval(updateCountdown, 1000);
       updateCountdown();
 
-      const songs = [
-        "songs/1.mp3",
-        "songs/2.mp3",
-        "songs/3.mp3",
-        "songs/4.mp3",
-        "songs/5.mp3",
-        "songs/6.mp3",
-        "songs/7.mp3",
-        "songs/8.mp3",
-        "songs/9.mp3",
-        "songs/10.mp3",
-        "songs/11.mp3",
-        "songs/12.mp3",
-        "songs/13.mp3",
-        "songs/14.mp3",
-        "songs/15.mp3",
-        "songs/16.mp3",
-        "songs/17.mp3",
-        "songs/18.mp3",
-        "songs/19.mp3",
-      ];
-      const playButton = document.getElementById("playButton");
-      const audio = document.getElementById("audio");
-      const icon = document.getElementById("icon");
-
-      function getRandomSong() {
-        const randomIndex = Math.floor(Math.random() * songs.length);
-        return songs[randomIndex];
-      }
-
-      audio.src = getRandomSong();
-
-      let isFirstClick = true;
-
-      playButton.addEventListener("click", () => {
-        if (isFirstClick) {
-          isFirstClick = false;
-          icon.innerHTML = "&#10074;&#10074;";
-          audio.play().catch((error) => {
-            console.error("Playback error:", error);
-          });
-        } else {
-          if (audio.paused) {
-            audio.play().catch((error) => {
-              console.error("Playback error:", error);
-            });
-            icon.innerHTML = "&#10074;&#10074;";
-          } else {
-            audio.pause();
-            icon.innerHTML = "&#9654;";
-          }
-        }
-      });
       const profileImages = [
         "images/a.jpg",
         "images/b.jpg",
