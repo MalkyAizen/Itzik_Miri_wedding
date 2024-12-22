@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap"
+      rel="stylesheet"
+    />
+    <title>ספירה לאחור לחתונה</title>
+    <style>
+      body {
+        font-family: "Varela Round", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        text-align: center;
+        background-image: url("background.jpg");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        background-size: cover;
+        overflow: hidden;
+      }
+
+      .countdown-container {
+        background: linear-gradient(145deg, #ffffff, #fdeedd);
+        border-radius: 20px;
+        padding: 70px;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        position: relative;
+        animation: colorPulse 5s infinite alternate;
+      }
+
+      h1 {
+        font-size: 50px;
+        color: #585757;
+        margin-top: 10%;
+      }
+
+      .countdown {
+        font-size: 40px;
+        margin: 20px 0;
+        color: #fdeedd;
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: row-reverse;
+      }
+
+      .time-segment {
+        font-size: 50px;
+        background-color: #fff3e6;
+        padding: 20px 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        color: #f5ebe0;
+        animation: colorPulse 6s infinite alternate;
+      }
+
+      .time-segment span {
+        display: block;
+        font-size: 20px;
+        color: #585757;
+      }
+
+      .profile-container {
+        position: absolute;
+        top: -120px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 230px;
+        height: 230px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #fdeedd;
+        box-shadow: 0 2px 4px #d4d3d1;
+      }
+
+      .profile-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 2s ease-in-out;
+      }
+
+      .profile-container img.active {
+        opacity: 1;
+        z-index: 1;
+      }
+
+      button {
+        width: 80px;
+        height: 80px;
+        background-color: #444444;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: fixed;
+        bottom: 50px;
+        left: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: pulse 1.5s infinite;
+      }
+
+      .icon {
+        font-size: 2.5rem;
+        color: #fff;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="countdown-container">
+      <div class="profile-container">
+        <img id="profileImage" src="images/f.jpg" alt="איציק ומירי" />
+      </div>
+      <h1>~ איציק & מירי ~</h1>
+      <div class="countdown" id="countdown">
+        <div class="time-segment">
+          <span id="days"></span>
+          <span>ימים</span>
+        </div>
+        <div class="time-segment">
+          <span id="hours"></span>
+          <span>שעות</span>
+        </div>
+        <div class="time-segment">
+          <span id="minutes"></span>
+          <span>דקות</span>
+        </div>
+        <div class="time-segment">
+          <span id="seconds"></span>
+          <span>שניות</span>
+        </div>
+      </div>
+      <button id="playButton">
+        <span class="icon" id="icon">&#9835;</span>
+      </button>
+      <audio id="audio" src="E:\website\songs\1.mp3"></audio>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+      var weddingDate = new Date("2025-04-02T00:00:00");
+      var previousMinute = null;
+
+      function updateCountdown() {
+        var now = new Date();
+        var timeDifference = weddingDate - now;
+
+        if (timeDifference > 0) {
+          var daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+          var hoursLeft = Math.floor(
+            (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          var minutesLeft = Math.floor(
+            (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          var secondsLeft = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+          document.getElementById("days").textContent = daysLeft;
+          document.getElementById("hours").textContent = hoursLeft;
+          document.getElementById("minutes").textContent = minutesLeft;
+          document.getElementById("seconds").textContent = secondsLeft;
+
+          if (minutesLeft !== previousMinute) {
+            launchConfetti();
+            previousMinute = minutesLeft;
+          }
+        } else {
+          document.getElementById("countdown").innerHTML = "~ מזל טוב ~";
+        }
+      }
+
+      var previousMinute = null;
+
+      function updateCountdown() {
+        var now = new Date();
+        var timeDifference = weddingDate - now;
+
+        if (timeDifference > 0) {
+          var daysLeft = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+          var hoursLeft = Math.floor(
+            (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          var minutesLeft = Math.floor(
+            (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          var secondsLeft = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+          document.getElementById("days").textContent = daysLeft;
+          document.getElementById("hours").textContent = hoursLeft;
+          document.getElementById("minutes").textContent = minutesLeft;
+          document.getElementById("seconds").textContent = secondsLeft;
+
+          if (minutesLeft !== previousMinute) {
+            launchConfetti();
+            previousMinute = minutesLeft;
+          }
+        } else {
+          document.getElementById("countdown").innerHTML = "~ מזל טוב ~";
+        }
+      }
+
+      function getHebrewWeek() {
+        var now = new Date();
+        var jewishDate = new Date(
+          now.toLocaleString("en-US", { timeZone: "Asia/Jerusalem" })
+        );
+        var jewishYear = jewishDate.getFullYear();
+        var jewishMonth = jewishDate.getMonth();
+
+        var firstDayOfMonth = new Date(jewishYear, jewishMonth, 1);
+        var daysInMonth = new Date(jewishYear, jewishMonth + 1, 0).getDate();
+        var dayOfMonth = jewishDate.getDate();
+
+        var hebrewWeek = Math.ceil(dayOfMonth / 7);
+
+        return hebrewWeek;
+      }
+
+      function launchConfetti() {
+        var duration = 3 * 1000;
+        var end = Date.now() + duration;
+
+        (function frame() {
+          confetti({
+            particleCount: 5,
+            angle: 90,
+            spread: 70,
+            origin: { x: Math.random(), y: Math.random() - 0.2 },
+            colors: ["#C0C0C0", "#FFFFFF", "#ffd700"],
+          });
+
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+        var hebrewWeek = getHebrewWeek();
+
+        if (hebrewWeek % 2 === 1) {
+          for (let i = 0; i < 10; i++) {
+            createCoupleIcon();
+          }
+        } else {
+          for (let i = 0; i < 10; i++) {
+            createPhoneIcon();
+          }
+        }
+      }
+
+      function createPhoneIcon() {
+        const phoneIcon = document.createElement("div");
+        phoneIcon.textContent = "📞";
+        phoneIcon.style.position = "absolute";
+        phoneIcon.style.fontSize = "30px";
+        phoneIcon.style.color = "gold";
+        phoneIcon.style.top = Math.random() * 80 + "vh";
+        phoneIcon.style.left = Math.random() * 100 + "vw";
+        phoneIcon.style.transform = `translate(-50%, -50%)`;
+        phoneIcon.style.animation = `fall ${3 + Math.random() * 2}s linear`;
+
+        document.body.appendChild(phoneIcon);
+
+        phoneIcon.addEventListener("animationend", () => {
+          phoneIcon.remove();
+        });
+      }
+
+      function createCoupleIcon() {
+        const coupleIcon = document.createElement("div");
+        coupleIcon.textContent = "🍻";
+        coupleIcon.style.position = "absolute";
+        coupleIcon.style.fontSize = "30px";
+        coupleIcon.style.color = "gold";
+        coupleIcon.style.top = Math.random() * 80 + "vh";
+        coupleIcon.style.left = Math.random() * 100 + "vw";
+        coupleIcon.style.transform = `translate(-50%, -50%)`;
+        coupleIcon.style.animation = `fall ${3 + Math.random() * 2}s linear`;
+
+        document.body.appendChild(coupleIcon);
+
+        coupleIcon.addEventListener("animationend", () => {
+          coupleIcon.remove();
+        });
+      }
+
+      const style = document.createElement("style");
+      style.innerHTML = `
+  @keyframes fall {
+    0% {
+      transform: translateY(-100vh) translateX(0) rotate(0deg);
+    }
+    100% {
+      transform: translateY(100vh) translateX(10px) rotate(360deg);
+    }
+  }
+`;
+      document.head.appendChild(style);
+
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      const songs = [
+        "E:/website/songs/1.mp3",
+        "E:/website/songs/2.mp3",
+        "E:/website/songs/3.mp3",
+        "E:/website/songs/4.mp3",
+        "E:/website/songs/5.mp3",
+        "E:/website/songs/6.mp3",
+        "E:/website/songs/7.mp3",
+        "E:/website/songs/8.mp3",
+        "E:/website/songs/9.mp3",
+        "E:/website/songs/10.mp3",
+        "E:/website/songs/11.mp3",
+        "E:/website/songs/12.mp3",
+        "E:/website/songs/13.mp3",
+        "E:/website/songs/14.mp3",
+        "E:/website/songs/15.mp3",
+        "E:/website/songs/16.mp3",
+        "E:/website/songs/17.mp3",
+        "E:/website/songs/18.mp3",
+        "E:/website/songs/19.mp3",
+      ];
+      const playButton = document.getElementById("playButton");
+      const audio = document.getElementById("audio");
+      const icon = document.getElementById("icon");
+
+      function getRandomSong() {
+        const randomIndex = Math.floor(Math.random() * songs.length);
+        return songs[randomIndex];
+      }
+
+      audio.src = getRandomSong();
+
+      let isFirstClick = true;
+
+      playButton.addEventListener("click", () => {
+        if (isFirstClick) {
+          isFirstClick = false;
+          icon.innerHTML = "&#10074;&#10074;";
+          audio.play().catch((error) => {
+            console.error("Playback error:", error);
+          });
+        } else {
+          if (audio.paused) {
+            audio.play().catch((error) => {
+              console.error("Playback error:", error);
+            });
+            icon.innerHTML = "&#10074;&#10074;";
+          } else {
+            audio.pause();
+            icon.innerHTML = "&#9654;";
+          }
+        }
+      });
+      const profileImages = [
+        "images/a.jpg",
+        "images/b.jpg",
+        "images/c.jpg",
+        "images/d.jpg",
+        "images/e.jpg",
+        "images/a.jpg",
+        "images/f.jpg",
+        "images/g.jpg",
+        "images/h.jpg",
+        "images/i.jpg",
+      ];
+
+      let currentImageIndex = 0;
+      const profileImageContainer =
+        document.querySelector(".profile-container");
+
+      profileImages.forEach((src, index) => {
+        const img = document.createElement("img");
+        img.src = src;
+        if (index === 0) img.classList.add("active");
+        profileImageContainer.appendChild(img);
+      });
+
+      function changeProfileImage() {
+        const images = profileImageContainer.querySelectorAll("img");
+        const currentImage = images[currentImageIndex];
+
+        currentImage.classList.remove("active");
+
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        const nextImage = images[currentImageIndex];
+
+        nextImage.classList.add("active");
+      }
+
+      changeProfileImage();
+
+      setInterval(changeProfileImage, 5000);
+    </script>
+  </body>
+</html>
